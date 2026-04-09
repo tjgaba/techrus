@@ -37,3 +37,19 @@ Deliverables for Review:
 2. A link to your connected GitHub repository.
 3. A screenshot of your local terminal successfully running the shopify theme dev
 server.
+
+ npm install -g @shopify/cli@latest
+shopify auth login
+shopify theme init dawn
+cd dawn
+git init
+git add .
+git commit -git push -u origin mainm "Initial Dawn theme"
+
+
+git branch -M main
+git remote add origin <your-github-repo-url>
+
+
+password: nowshu
+
