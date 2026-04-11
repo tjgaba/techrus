@@ -1,0 +1,508 @@
+{% liquid
+  assign selected_variant = product.selected_or_first_available_variant
+  assign discount_percent = 0
+
+  if product.compare_at_price > product.price and product.compare_at_price > 0
+    assign price_difference = product.compare_at_price | minus: product.price
+    assign discount_percent = price_difference | times: 100.0 | divided_by: product.compare_at_price | round
+  endif
+
+  assign form_id = 'ProductForm-' | append: section.id
+  assign specs_rows = ''
+  assign has_specs = false
+  assign spec_badges = ''
+
+  for tag in product.tags
+    if tag contains 'spec:'
+      assign parts = tag | split: ':'
+      if parts.size >= 3
+        assign spec_name = parts[1] | strip
+        assign spec_value = parts[2] | strip
+        assign has_specs = true
+        capture specs_rows
+          echo specs_rows
+          echo '<tr><td>'
+          echo spec_name
+          echo '</td><td>'
+          echo spec_value
+          echo '</td></tr>'
+        endcapture
+
+        assign spec_name_downcase = spec_name | downcase
+
+        if spec_name_downcase == 'storage'
+          unless spec_badges contains 'High Capacity'
+            if spec_value contains '1TB' or spec_value contains '2TB'
+              assign spec_badges = spec_badges | append: 'High Capacity|'
+            endif
+          endunless
+        endif
+
+        if spec_name_downcase == 'ram'
+          unless spec_badges contains 'Pro Performance'
+            if spec_value contains '32GB' or spec_value contains '64GB'
+              assign spec_badges = spec_badges | append: 'Pro Performance|'
+            endif
+          endunless
+        endif
+
+        if spec_name_downcase == 'battery'
+          unless spec_badges contains 'All-Day Battery'
+            if spec_value contains '18' or spec_value contains '19' or spec_value contains '20' or spec_value contains '21' or spec_value contains '22' or spec_value contains '23' or spec_value contains '24'
+              assign spec_badges = spec_badges | append: 'All-Day Battery|'
+            endif
+          endunless
+        endif
+      endif
+    endif
+  endfor
+
+  assign spec_badge_list = spec_badges | split: '|'
+  assign min_price = selected_variant.price
+  assign max_price = selected_variant.price
+
+  if product.variants.size > 0
+    assign min_price = product.variants[0].price
+    assign max_price = product.variants[0].price
+    for variant in product.variants
+      if variant.price < min_price
+        assign min_price = variant.price
+      endif
+      if variant.price > max_price
+        assign max_price = variant.price
+      endif
+    endfor
+  endif
+%}
+
+<section class="electronics-product section color-{{ section.settings.color_scheme }}">
+  <div class="electronics-product__inner page-width">
+    <div class="electronics-product__badges">
+      {% if product.compare_at_price > product.price %}
+        <span class="electronics-product__badge electronics-product__badge--sale">
+          SALE - Save {{ discount_percent }}%
+        </span>
+      {% endif %}
+      {% if product.tags contains 'new-arrival' %}
+        <span class="electronics-product__badge electronics-product__badge--new">New Arrival</span>
+      {% endif %}
+      {% if product.tags contains 'best-seller' %}
+        <span class="electronics-product__badge electronics-product__badge--best">Best Seller</span>
+      {% endif %}
+      {% unless product.available %}
+        <span class="electronics-product__badge electronics-product__badge--soldout">Sold Out</span>
+      {% endunless %}
+      {% for spec_badge in spec_badge_list %}
+        {% if spec_badge != blank %}
+          <span class="electronics-product__badge electronics-product__badge--spec">{{ spec_badge }}</span>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="electronics-product__grid">
+      <div class="electronics-product__media">
+        {% if product.featured_image %}
+          {{
+            product.featured_image
+            | image_url: width: 600
+            | image_tag:
+              alt: product.featured_image.alt | default: product.title,
+              loading: 'eager',
+              class: 'electronics-product__featured-image'
+          }}
+        {% endif %}
+
+        <div class="electronics-product__gallery">
+          {% for image in product.images %}
+            <img
+              src="{{ image | image_url: width: 200 }}"
+              alt="{{ image.alt | default: product.title | escape }}"
+              loading="lazy"
+              class="electronics-product__thumbnail"
+              width="{{ image.width }}"
+              height="{{ image.height }}"
+            >
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="electronics-product__details">
+        <header class="electronics-product__header">
+          <p class="electronics-product__vendor">{{ product.vendor | upcase }}</p>
+          <h1 class="electronics-product__title">{{ product.title }}</h1>
+          <p class="electronics-product__type">{{ product.type }}</p>
+          <p class="electronics-product__date">Added {{ product.created_at | date: "%B %d, %Y" }}</p>
+
+          <div class="electronics-product__pricing">
+            <p class="electronics-product__price" data-selected-price>{{ selected_variant.price | money }}</p>
+            {% if product.compare_at_price > product.price %}
+              <p class="electronics-product__compare">{{ product.compare_at_price | money }}</p>
+            {% endif %}
+          </div>
+
+          <p class="electronics-product__range">
+            {% if min_price == max_price %}
+              {{ min_price | money }}
+            {% else %}
+              From {{ min_price | money }} - {{ max_price | money }}
+            {% endif %}
+          </p>
+        </header>
+
+        <div class="electronics-product__description-preview">
+          {{ product.description | strip_html | truncate: 120 }}
+        </div>
+
+        <div class="electronics-product__description rte">
+          {{ product.description }}
+        </div>
+
+        {% if section.settings.show_specs %}
+          <div class="electronics-product__specs">
+            <h2>{{ section.settings.specs_heading }}</h2>
+            {% if has_specs %}
+              <table class="electronics-product__table">
+                <thead>
+                  <tr>
+                    <th>Specification</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{ specs_rows }}
+                </tbody>
+              </table>
+            {% else %}
+              <p>No technical specifications were found in the product tags.</p>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% form 'product', product, class: 'electronics-product__form', id: form_id %}
+          <div class="electronics-product__options">
+            {% for option in product.options_with_values %}
+              <div class="electronics-product__option-group">
+                <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+                <select
+                  id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                  class="electronics-product__option-select"
+                  data-option-position="{{ option.position }}"
+                >
+                  {% for value in option.values %}
+                    <option
+                      value="{{ value | escape }}"
+                      {% if option.selected_value == value %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ value }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endfor %}
+          </div>
+
+          <input
+            type="hidden"
+            name="id"
+            value="{{ selected_variant.id }}"
+            data-selected-variant-id
+          >
+
+          <button type="submit" class="electronics-product__submit" {% unless product.available %}disabled{% endunless %}>
+            {% if product.available %}
+              Add to Cart - <span data-submit-price>{{ selected_variant.price | money }}</span>
+            {% else %}
+              Sold Out
+            {% endif %}
+          </button>
+        {% endform %}
+
+        <div class="electronics-product__variants">
+          <p class="electronics-product__variant-count">{{ product.variants | size }} configurations available</p>
+          <table class="electronics-product__table">
+            <thead>
+              <tr>
+                <th>Variant name</th>
+                <th>SKU</th>
+                <th>Price</th>
+                <th>Stock status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for variant in product.variants %}
+                <tr>
+                  <td>{{ variant.title }}</td>
+                  <td>{{ variant.sku | default: 'N/A' }}</td>
+                  <td>{{ variant.price | money }}</td>
+                  <td>
+                    {% if variant.available %}
+                      In Stock
+                    {% else %}
+                      Sold Out
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-variant-json>
+    {{ product.variants | json }}
+  </script>
+
+  <script>
+    (() => {
+      const section = document.currentScript.closest('.electronics-product');
+      if (!section) return;
+
+      const variantData = section.querySelector('[data-variant-json]');
+      const selects = Array.from(section.querySelectorAll('.electronics-product__option-select'));
+      const variantInput = section.querySelector('[data-selected-variant-id]');
+      const selectedPrice = section.querySelector('[data-selected-price]');
+      const submitPrice = section.querySelector('[data-submit-price]');
+      const submitButton = section.querySelector('.electronics-product__submit');
+
+      if (!variantData || selects.length === 0 || !variantInput) return;
+
+      const variants = JSON.parse(variantData.textContent);
+      const moneyFormat = {{ shop.money_format | json }};
+
+      const formatMoney = (cents) => {
+        const amount = (cents / 100).toFixed(2);
+        return moneyFormat
+          .replace('{% raw %}{{ amount }}{% endraw %}', amount)
+          .replace('{% raw %}{{amount}}{% endraw %}', amount);
+      };
+
+      const syncVariant = () => {
+        const selectedOptions = selects.map((select) => select.value);
+        const matchedVariant = variants.find((variant) =>
+          variant.options.every((value, index) => value === selectedOptions[index])
+        );
+
+        if (!matchedVariant) {
+          submitButton.disabled = true;
+          return;
+        }
+
+        variantInput.value = matchedVariant.id;
+
+        if (selectedPrice) selectedPrice.textContent = formatMoney(matchedVariant.price);
+        if (submitPrice) submitPrice.textContent = formatMoney(matchedVariant.price);
+
+        submitButton.disabled = !matchedVariant.available;
+        if (!matchedVariant.available) {
+          submitButton.textContent = 'Sold Out';
+        } else {
+          submitButton.innerHTML = 'Add to Cart - <span data-submit-price>' + formatMoney(matchedVariant.price) + '</span>';
+        }
+      };
+
+      selects.forEach((select) => select.addEventListener('change', syncVariant));
+      syncVariant();
+    })();
+  </script>
+
+  {% stylesheet %}
+    .electronics-product {
+      padding-top: 48px;
+      padding-bottom: 48px;
+    }
+
+    .electronics-product__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 40px;
+      align-items: start;
+    }
+
+    .electronics-product__badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .electronics-product__badge {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .electronics-product__badge--sale { background: #c62828; }
+    .electronics-product__badge--new { background: #1565c0; }
+    .electronics-product__badge--best { background: #2e7d32; }
+    .electronics-product__badge--soldout { background: #616161; }
+    .electronics-product__badge--spec { background: #5d4037; }
+
+    .electronics-product__featured-image,
+    .electronics-product__thumbnail {
+      width: 100%;
+      display: block;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .electronics-product__gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .electronics-product__vendor,
+    .electronics-product__type,
+    .electronics-product__date,
+    .electronics-product__range {
+      margin: 0 0 10px;
+    }
+
+    .electronics-product__title {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.05;
+    }
+
+    .electronics-product__pricing {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+
+    .electronics-product__price {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .electronics-product__compare {
+      margin: 0;
+      color: rgba(0, 0, 0, 0.55);
+      text-decoration: line-through;
+    }
+
+    .electronics-product__description-preview {
+      margin: 24px 0 16px;
+      padding: 16px 18px;
+      border-left: 4px solid currentColor;
+      background: rgba(0, 0, 0, 0.04);
+      font-weight: 600;
+    }
+
+    .electronics-product__description {
+      margin-bottom: 28px;
+    }
+
+    .electronics-product__specs,
+    .electronics-product__variants {
+      margin-top: 28px;
+    }
+
+    .electronics-product__table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    .electronics-product__table th,
+    .electronics-product__table td {
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .electronics-product__options {
+      display: grid;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .electronics-product__option-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .electronics-product__option-select,
+    .electronics-product__submit {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 12px;
+    }
+
+    .electronics-product__option-select {
+      padding: 0 12px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      background: #ffffff;
+    }
+
+    .electronics-product__submit {
+      margin-top: 18px;
+      border: 0;
+      background: #111111;
+      color: #ffffff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .electronics-product__submit[disabled] {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .electronics-product__variant-count {
+      margin: 0 0 12px;
+      font-weight: 600;
+    }
+
+    @media screen and (max-width: 989px) {
+      .electronics-product__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  {% endstylesheet %}
+</section>
+
+{% schema %}
+{
+  "name": "Electronics Product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_specs",
+      "label": "Show specifications table",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "specs_heading",
+      "label": "Specs section heading",
+      "default": "Technical Specifications"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Electronics Product"
+    }
+  ]
+}
+{% endschema %}
