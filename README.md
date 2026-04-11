@@ -1,16 +1,18 @@
-<h1 align="center" style="position: relative;">
-  <br>
-    <img src="./assets/shoppy-x-ray.svg" alt="logo" width="200">
-  <br>
-  Shopify Skeleton Theme
-</h1>
+## Techrus Theme
 
-A minimal, carefully structured Shopify theme designed to help you quickly get started. Designed with modularity, maintainability, and Shopify's best practices in mind.
+This repository contains the Shopify theme for the Techrus consumer electronics store. The current assignment work adds a custom electronics product template with product badges, specification parsing from tags, variant-aware pricing, an image gallery, and a configurable schema-driven section.
 
-<p align="center">
-  <a href="./LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
-  <a href="./actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Shopify/skeleton-theme/actions/workflows/ci.yml/badge.svg"></a>
-</p>
+## Assignment Deliverables
+
+- [architecture-summary.md](./architecture-summary.md) contains the product rendering flow summary.
+- [sections/product-electronics.liquid](./sections/product-electronics.liquid) contains the custom electronics product section.
+- [templates/product.electronics.json](./templates/product.electronics.json) loads the custom electronics section for product pages.
+
+## Store Theme
+
+- Store: `techrus-9387.myshopify.com`
+- Main theme ID used for this assignment: `154233733275`
+- Linked development theme previously inspected: `154234060955`
 
 ## Getting started
 
@@ -26,12 +28,8 @@ If you use VS Code:
 
 ### Clone
 
-Clone this repository using Git or Shopify CLI:
-
 ```bash
-git clone git@github.com:Shopify/skeleton-theme.git
-# or
-shopify theme init
+git clone <your-repository-url>
 ```
 
 ### Preview
@@ -40,6 +38,14 @@ Preview this theme using Shopify CLI:
 
 ```bash
 shopify theme dev
+```
+
+### Pull the current Shopify theme
+
+To sync this local project with the Shopify theme used in the admin:
+
+```bash
+shopify theme pull --theme 154233733275 --path .
 ```
 
 ## Theme architecture
