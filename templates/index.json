@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero_jVaWmY": {
       "type": "hero",
@@ -65,6 +66,7 @@
         "custom_mobile_media": false,
         "media_type_1_mobile": "image",
         "media_type_2_mobile": "image",
+        "link": "",
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -88,24 +90,66 @@
         "padding-block-end": 72
       }
     },
+    "featured_collections_grid_Mrig77": {
+      "type": "featured-collections-grid",
+      "blocks": {
+        "collection_card_bimrKR": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "apple-ecosystem",
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_3HiyDE": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "gaming-gear",
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_ma4Ti7": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "budget-tech-under-r1-000",
+            "button_text": "Shop Now"
+          }
+        }
+      },
+      "block_order": [
+        "collection_card_bimrKR",
+        "collection_card_3HiyDE",
+        "collection_card_ma4Ti7"
+      ],
+      "name": "Featured Collections Grid",
+      "settings": {
+        "heading": "Shop by collection",
+        "subheading": "Explore featured categories across the store.",
+        "section_width": "page-width",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
     "featured_collections_grid_main": {
       "type": "featured-collections-grid",
       "blocks": {
         "collection_card_1": {
           "type": "collection_card",
           "settings": {
+            "collection": "accessories",
             "button_text": "Shop Now"
           }
         },
         "collection_card_2": {
           "type": "collection_card",
           "settings": {
+            "collection": "high-performance-gear",
             "button_text": "Shop Now"
           }
         },
         "collection_card_3": {
           "type": "collection_card",
           "settings": {
+            "collection": "electronics-and-accessories-example-products",
             "button_text": "Shop Now"
           }
         }
@@ -320,6 +364,7 @@
   },
   "order": [
     "hero_jVaWmY",
+    "featured_collections_grid_Mrig77",
     "featured_collections_grid_main",
     "product_list_fa6P9H"
   ]
