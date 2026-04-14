@@ -8,6 +8,7 @@
 ehthumbs.db
 Thumbs.db
 node_modules/
+config/settings_data.json
 
 # Shopify CLI files
 .shopify/
