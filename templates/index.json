@@ -61,6 +61,7 @@
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
+        "image_1": "shopify://shop_images/compilation-electronic-gadgets-black-background_893571-15167.avif",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
