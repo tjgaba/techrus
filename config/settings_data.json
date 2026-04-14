@@ -76,7 +76,7 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
-    "announcement_text": "Get Free shipping on All orders over R1,000",
+    "announcement_bg": "#f25b30",
     "content_for_index": [],
     "color_schemes": {
       "scheme-1": {
