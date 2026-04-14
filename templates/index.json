@@ -88,6 +88,41 @@
         "padding-block-end": 72
       }
     },
+    "featured_collections_grid_main": {
+      "type": "featured-collections-grid",
+      "blocks": {
+        "collection_card_1": {
+          "type": "collection_card",
+          "settings": {
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_2": {
+          "type": "collection_card",
+          "settings": {
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_3": {
+          "type": "collection_card",
+          "settings": {
+            "button_text": "Shop Now"
+          }
+        }
+      },
+      "block_order": [
+        "collection_card_1",
+        "collection_card_2",
+        "collection_card_3"
+      ],
+      "settings": {
+        "heading": "Featured Collections",
+        "subheading": "Browse our most popular consumer electronics categories.",
+        "section_width": "page-width",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -285,6 +320,7 @@
   },
   "order": [
     "hero_jVaWmY",
+    "featured_collections_grid_main",
     "product_list_fa6P9H"
   ]
 }
