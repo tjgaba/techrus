@@ -1,0 +1,201 @@
+<nav
+  class="custom-mega-menu"
+  aria-label="Main menu"
+>
+  {% assign menu_links = menu.links | default: linklists['main-menu'].links %}
+  <ul class="custom-mega-menu__list" role="list">
+    {% for link in menu_links %}
+      <li class="custom-mega-menu__item">
+        <a
+          href="{{ link.url }}"
+          class="custom-mega-menu__link{% if link.active or link.child_active %} custom-mega-menu__link--active{% endif %}"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{ link.title }}
+        </a>
+
+        {% if link.links.size > 0 %}
+          <div class="custom-mega-menu__dropdown">
+            <div class="custom-mega-menu__dropdown-grid{% if link.links.size > 4 %} custom-mega-menu__dropdown-grid--split{% endif %}">
+              <ul class="custom-mega-menu__children" role="list">
+                {% for child_link in link.links %}
+                  <li>
+                    <a
+                      href="{{ child_link.url }}"
+                      class="custom-mega-menu__child-link{% if child_link.active %} custom-mega-menu__child-link--active{% endif %}"
+                      {% if child_link.current %}
+                        aria-current="page"
+                      {% endif %}
+                    >
+                      {{ child_link.title }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+
+              {% if link.handle == 'computers' and collections[link.handle] != blank and collections[link.handle].products.first != blank %}
+                {% assign featured_product = collections[link.handle].products.first %}
+                <div class="custom-mega-menu__featured-product">
+                  <p class="custom-mega-menu__featured-label">Featured Product</p>
+                  <a href="{{ featured_product.url }}" class="custom-mega-menu__featured-card">
+                    {% if featured_product.featured_image != blank %}
+                      {{
+                        featured_product.featured_image
+                        | image_url: width: 480
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'custom-mega-menu__featured-image',
+                          widths: '240,360,480'
+                      }}
+                    {% endif %}
+                    <span class="custom-mega-menu__featured-title">{{ featured_product.title }}</span>
+                    <span class="custom-mega-menu__featured-price">{{ featured_product.price | money }}</span>
+                    <span class="custom-mega-menu__featured-cta">Shop Now</span>
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
+
+<style>
+  .custom-mega-menu {
+    display: none;
+    margin-inline: 1.5rem;
+    position: relative;
+  }
+
+  @media screen and (min-width: 769px) {
+    .custom-mega-menu {
+      display: block;
+    }
+  }
+
+  .custom-mega-menu__list {
+    align-items: stretch;
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .custom-mega-menu__item {
+    position: relative;
+  }
+
+  .custom-mega-menu__link {
+    color: rgb(var(--color-foreground-rgb));
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 1rem 1.1rem;
+    text-decoration: none;
+  }
+
+  .custom-mega-menu__link--active {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+  }
+
+  .custom-mega-menu__dropdown {
+    background: rgb(var(--color-background-rgb));
+    border: 1px solid rgb(var(--color-border-rgb) / 0.6);
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: 0 18px 44px rgb(0 0 0 / 0.12);
+    display: none;
+    left: 0;
+    min-width: 20rem;
+    padding: 1.25rem;
+    position: absolute;
+    top: 100%;
+    z-index: 25;
+  }
+
+  .custom-mega-menu__item:hover .custom-mega-menu__dropdown {
+    display: block;
+  }
+
+  .custom-mega-menu__dropdown-grid {
+    display: grid;
+    gap: 1.5rem;
+    min-width: 16rem;
+  }
+
+  .custom-mega-menu__dropdown-grid--split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .custom-mega-menu__children {
+    display: grid;
+    gap: 0.65rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .custom-mega-menu__child-link {
+    color: rgb(var(--color-foreground-rgb));
+    display: block;
+    text-decoration: none;
+  }
+
+  .custom-mega-menu__child-link--active,
+  .custom-mega-menu__child-link:hover {
+    font-weight: 700;
+  }
+
+  .custom-mega-menu__featured-product {
+    border-left: 1px solid rgb(var(--color-border-rgb) / 0.5);
+    padding-left: 1.25rem;
+  }
+
+  .custom-mega-menu__featured-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .custom-mega-menu__featured-card {
+    color: inherit;
+    display: grid;
+    gap: 0.55rem;
+    text-decoration: none;
+  }
+
+  .custom-mega-menu__featured-image {
+    aspect-ratio: 4 / 3;
+    border-radius: 0.75rem;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .custom-mega-menu__featured-title {
+    font-weight: 700;
+  }
+
+  .custom-mega-menu__featured-price {
+    color: rgb(var(--color-foreground-rgb) / 0.75);
+    font-size: 0.95rem;
+  }
+
+  .custom-mega-menu__featured-cta {
+    color: rgb(var(--color-primary-rgb));
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    .custom-mega-menu {
+      display: none !important;
+    }
+  }
+</style>

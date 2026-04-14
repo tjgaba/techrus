@@ -1,169 +1,72 @@
-## Techrus Theme
+# Techrus Shopify Theme
 
-This repository contains the Shopify theme for the Techrus consumer electronics store. The current assignment work adds a custom electronics product template with product badges, specification parsing from tags, variant-aware pricing, an image gallery, and a configurable schema-driven section.
+This repository contains the Shopify theme for the Techrus consumer electronics store. The current branch focuses on Horizon theme customizations for the storefront.
 
-## Assignment Deliverables
+## Delivered work
 
-- [architecture-summary.md](./architecture-summary.md) contains the product rendering flow summary.
-- [sections/product-electronics.liquid](./sections/product-electronics.liquid) contains the custom electronics product section.
-- [templates/product.electronics.json](./templates/product.electronics.json) loads the custom electronics section for product pages.
+- Added global theme settings for the announcement bar and product card styling
+- Added a reusable `announcement-bar` snippet and rendered it in the main layout
+- Customized product cards with sale badges, vendor display, and global card radius controls
+- Replaced the default desktop header menu output with a custom responsive mega menu
+- Added a featured collections homepage section and connected it in `templates/index.json`
+- Ignored `config/settings_data.json` to keep store-specific editor data out of Git
 
-## Store Theme
+## Key files
+
+- [config/settings_schema.json](./config/settings_schema.json)
+- [layout/theme.liquid](./layout/theme.liquid)
+- [snippets/announcement-bar.liquid](./snippets/announcement-bar.liquid)
+- [snippets/product-card.liquid](./snippets/product-card.liquid)
+- [snippets/mega-menu.liquid](./snippets/mega-menu.liquid)
+- [blocks/_header-menu.liquid](./blocks/_header-menu.liquid)
+- [sections/header.liquid](./sections/header.liquid)
+- [sections/featured-collections-grid.liquid](./sections/featured-collections-grid.liquid)
+- [templates/index.json](./templates/index.json)
+
+## Store details
 
 - Store: `techrus-9387.myshopify.com`
-- Main theme ID used for this assignment: `154233733275`
-- Linked development theme previously inspected: `154234060955`
+- Live theme: `techrus/main` (`154233733275`)
+- Development theme: `Development (c34878-Nur)` (`154234060955`)
 
-## Getting started
+## Local development
 
-### Prerequisites
+### Requirements
 
-Before starting, ensure you have the latest Shopify CLI installed:
+- [Shopify CLI](https://shopify.dev/docs/api/shopify-cli)
 
-- [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) – helps you download, upload, preview themes, and streamline your workflows
-
-If you use VS Code:
-
-- [Shopify Liquid VS Code Extension](https://shopify.dev/docs/storefronts/themes/tools/shopify-liquid-vscode) – provides syntax highlighting, linting, inline documentation, and auto-completion specifically designed for Liquid templates
-
-### Clone
-
-```bash
-git clone <your-repository-url>
-```
-
-### Preview
-
-Preview this theme using Shopify CLI:
+### Run locally
 
 ```bash
 shopify theme dev
 ```
 
-### Pull the current Shopify theme
-
-To sync this local project with the Shopify theme used in the admin:
+### Pull the live theme
 
 ```bash
 shopify theme pull --theme 154233733275 --path .
 ```
 
-## Theme architecture
+### Push to the development theme
 
 ```bash
-.
-├── assets          # Stores static assets (CSS, JS, images, fonts, etc.)
-├── blocks          # Reusable, nestable, customizable UI components
-├── config          # Global theme settings and customization options
-├── layout          # Top-level wrappers for pages (layout templates)
-├── locales         # Translation files for theme internationalization
-├── sections        # Modular full-width page components
-├── snippets        # Reusable Liquid code or HTML fragments
-└── templates       # Templates combining sections to define page structures
+shopify theme push --theme 154234060955
 ```
 
-To learn more, refer to the [theme architecture documentation](https://shopify.dev/docs/storefronts/themes/architecture).
+## Repository structure
 
-### Templates
+```text
+assets/
+blocks/
+config/
+layout/
+locales/
+sections/
+snippets/
+templates/
+```
 
-[Templates](https://shopify.dev/docs/storefronts/themes/architecture/templates#template-types) control what's rendered on each type of page in a theme.
+## Notes
 
-The Skeleton Theme scaffolds [JSON templates](https://shopify.dev/docs/storefronts/themes/architecture/templates/json-templates) to make it easy for merchants to customize their store.
-
-None of the template types are required, and not all of them are included in the Skeleton Theme. Refer to the [template types reference](https://shopify.dev/docs/storefronts/themes/architecture/templates#template-types) for a full list.
-
-### Sections
-
-[Sections](https://shopify.dev/docs/storefronts/themes/architecture/sections) are Liquid files that allow you to create reusable modules of content that can be customized by merchants. They can also include blocks which allow merchants to add, remove, and reorder content within a section.
-
-Sections are made customizable by including a `{% schema %}` in the body. For more information, refer to the [section schema documentation](https://shopify.dev/docs/storefronts/themes/architecture/sections/section-schema).
-
-### Blocks
-
-[Blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks) let developers create flexible layouts by breaking down sections into smaller, reusable pieces of Liquid. Each block has its own set of settings, and can be added, removed, and reordered within a section.
-
-Blocks are made customizable by including a `{% schema %}` in the body. For more information, refer to the [block schema documentation](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/schema).
-
-## Schemas
-
-When developing components defined by schema settings, we recommend these guidelines to simplify your code:
-
-- **Single property settings**: For settings that correspond to a single CSS property, use CSS variables:
-
-  ```liquid
-  <div class="collection" style="--gap: {{ block.settings.gap }}px">
-    ...
-  </div>
-
-  {% stylesheet %}
-    .collection {
-      gap: var(--gap);
-    }
-  {% endstylesheet %}
-
-  {% schema %}
-  {
-    "settings": [{
-      "type": "range",
-      "label": "gap",
-      "id": "gap",
-      "min": 0,
-      "max": 100,
-      "unit": "px",
-      "default": 0,
-    }]
-  }
-  {% endschema %}
-  ```
-
-- **Multiple property settings**: For settings that control multiple CSS properties, use CSS classes:
-
-  ```liquid
-  <div class="collection {{ block.settings.layout }}">
-    ...
-  </div>
-
-  {% stylesheet %}
-    .collection--full-width {
-      /* multiple styles */
-    }
-    .collection--narrow {
-      /* multiple styles */
-    }
-  {% endstylesheet %}
-
-  {% schema %}
-  {
-    "settings": [{
-      "type": "select",
-      "id": "layout",
-      "label": "layout",
-      "values": [
-        { "value": "collection--full-width", "label": "t:options.full" },
-        { "value": "collection--narrow", "label": "t:options.narrow" }
-      ]
-    }]
-  }
-  {% endschema %}
-  ```
-
-## CSS & JavaScript
-
-For CSS and JavaScript, we recommend using the [`{% stylesheet %}`](https://shopify.dev/docs/api/liquid/tags#stylesheet) and [`{% javascript %}`](https://shopify.dev/docs/api/liquid/tags/javascript) tags. They can be included multiple times, but the code will only appear once.
-
-### `critical.css`
-
-The Skeleton Theme explicitly separates essential CSS necessary for every page into a dedicated `critical.css` file.
-
-## Contributing
-
-We're excited for your contributions to the Skeleton Theme! This repository aims to remain as lean, lightweight, and fundamental as possible, and we kindly ask your contributions to align with this intention. 
-
-## Edify
-Making minor change to update main repo.
-
-Visit our [CONTRIBUTING.md](./CONTRIBUTING.md) for a detailed overview of our process, guidelines, and recommendations.
-
-## License
-
-Skeleton Theme is open-sourced under the [MIT](./LICENSE.md) License.
+- Homepage collection cards require actual Shopify collections to be assigned in the theme editor.
+- `config/settings_data.json` is intentionally ignored because it contains store-specific customization data.

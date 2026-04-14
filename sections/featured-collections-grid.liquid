@@ -1,0 +1,234 @@
+<section
+  class="featured-collections-grid section section--{{ section.settings.section_width }}"
+  style="--featured-grid-padding-top: {{ section.settings.padding_top }}px; --featured-grid-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  {% if section.settings.heading != blank or section.settings.subheading != blank %}
+    <header class="featured-collections-grid__header">
+      {% if section.settings.heading != blank %}
+        <h2 class="featured-collections-grid__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <p class="featured-collections-grid__subheading">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </header>
+  {% endif %}
+
+  <div class="featured-collections-grid__items">
+    {% for block in section.blocks %}
+      {% assign collection = block.settings.collection %}
+      {% assign fallback_image = blank %}
+      {% if collection != blank and collection.products.first != blank %}
+        {% assign fallback_image = collection.products.first.featured_image %}
+      {% endif %}
+      <article class="featured-collections-grid__card" {{ block.shopify_attributes }}>
+        <a href="{{ collection.url | default: '#' }}" class="featured-collections-grid__link">
+          <div class="featured-collections-grid__media">
+            {% if collection.image != blank %}
+              {{
+                collection.image
+                | image_url: width: 600
+                | image_tag:
+                  class: 'featured-collections-grid__image',
+                  loading: 'lazy',
+                  widths: '320,480,600'
+              }}
+            {% elsif fallback_image != blank %}
+              {{
+                fallback_image
+                | image_url: width: 600
+                | image_tag:
+                  class: 'featured-collections-grid__image',
+                  loading: 'lazy',
+                  widths: '320,480,600'
+              }}
+            {% else %}
+              <div class="featured-collections-grid__placeholder">Collection image</div>
+            {% endif %}
+          </div>
+
+          <div class="featured-collections-grid__content">
+            <h3 class="featured-collections-grid__title">{{ collection.title | default: 'Select a collection' }}</h3>
+            <p class="featured-collections-grid__count">{{ collection.products_count | default: 0 }} products</p>
+            <span class="featured-collections-grid__button">{{ block.settings.button_text | default: 'Shop Now' }}</span>
+          </div>
+        </a>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .featured-collections-grid {
+    padding-block: var(--featured-grid-padding-top) var(--featured-grid-padding-bottom);
+  }
+
+  .featured-collections-grid__header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .featured-collections-grid__heading {
+    margin: 0;
+  }
+
+  .featured-collections-grid__subheading {
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+    margin: 0.75rem auto 0;
+    max-width: 42rem;
+  }
+
+  .featured-collections-grid__items {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media screen and (min-width: 600px) {
+    .featured-collections-grid__items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 900px) {
+    .featured-collections-grid__items {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .featured-collections-grid__card {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .featured-collections-grid__link {
+    color: inherit;
+    display: grid;
+    height: 100%;
+    text-decoration: none;
+  }
+
+  .featured-collections-grid__media {
+    background: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .featured-collections-grid__image,
+  .featured-collections-grid__placeholder {
+    aspect-ratio: 4 / 3;
+    display: block;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .featured-collections-grid__placeholder {
+    align-items: center;
+    color: rgb(var(--color-foreground-rgb) / 0.65);
+    display: flex;
+    justify-content: center;
+  }
+
+  .featured-collections-grid__content {
+    background: rgb(var(--color-background-rgb));
+    border: 1px solid rgb(var(--color-border-rgb) / 0.6);
+    border-top: 0;
+    display: grid;
+    gap: 0.55rem;
+    padding: 1.25rem;
+  }
+
+  .featured-collections-grid__title,
+  .featured-collections-grid__count {
+    margin: 0;
+  }
+
+  .featured-collections-grid__count {
+    color: rgb(var(--color-foreground-rgb) / 0.72);
+  }
+
+  .featured-collections-grid__button {
+    color: rgb(var(--color-primary-rgb));
+    font-weight: 700;
+    margin-top: 0.4rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Featured Collections Grid",
+  "tag": "section",
+  "class": "shopify-section--featured-collections-grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by collection"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Explore featured categories across the store."
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Collection card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Shop Now"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Featured Collections Grid",
+      "blocks": [
+        { "type": "collection_card" },
+        { "type": "collection_card" },
+        { "type": "collection_card" }
+      ]
+    }
+  ]
+}
+{% endschema %}
