@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero_jVaWmY": {
       "type": "hero",
@@ -65,6 +66,7 @@
         "custom_mobile_media": false,
         "media_type_1_mobile": "image",
         "media_type_2_mobile": "image",
+        "link": "",
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -94,18 +96,21 @@
         "collection_card_1": {
           "type": "collection_card",
           "settings": {
+            "collection": "accessories",
             "button_text": "Shop Now"
           }
         },
         "collection_card_2": {
           "type": "collection_card",
           "settings": {
+            "collection": "high-performance-gear",
             "button_text": "Shop Now"
           }
         },
         "collection_card_3": {
           "type": "collection_card",
           "settings": {
+            "collection": "electronics-and-accessories-example-products",
             "button_text": "Shop Now"
           }
         }
