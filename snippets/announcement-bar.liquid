@@ -1,0 +1,41 @@
+{%- if settings.show_announcement and settings.announcement_text != blank -%}
+  <div
+    class="custom-announcement-bar"
+    style="--announcement-bg: {{ settings.announcement_bg }}; --announcement-text: {{ settings.announcement_text_color }};"
+  >
+    {%- if settings.announcement_link != blank -%}
+      <a
+        href="{{ settings.announcement_link }}"
+        class="custom-announcement-bar__link"
+      >
+        {{ settings.announcement_text }}
+      </a>
+    {%- else -%}
+      <p class="custom-announcement-bar__text">{{ settings.announcement_text }}</p>
+    {%- endif -%}
+  </div>
+
+  <style>
+    .custom-announcement-bar {
+      background: var(--announcement-bg);
+      color: var(--announcement-text);
+      padding: 0.85rem 1.25rem;
+      text-align: center;
+    }
+
+    .custom-announcement-bar__link,
+    .custom-announcement-bar__text {
+      color: inherit;
+      display: inline-block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      margin: 0;
+      text-decoration: none;
+    }
+
+    .custom-announcement-bar__link:hover {
+      text-decoration: underline;
+    }
+  </style>
+{%- endif -%}
