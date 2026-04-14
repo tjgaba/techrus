@@ -90,6 +90,45 @@
         "padding-block-end": 72
       }
     },
+    "featured_collections_grid_Mrig77": {
+      "type": "featured-collections-grid",
+      "blocks": {
+        "collection_card_bimrKR": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "apple-ecosystem",
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_3HiyDE": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "gaming-gear",
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_ma4Ti7": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "budget-tech-under-r1-000",
+            "button_text": "Shop Now"
+          }
+        }
+      },
+      "block_order": [
+        "collection_card_bimrKR",
+        "collection_card_3HiyDE",
+        "collection_card_ma4Ti7"
+      ],
+      "name": "Featured Collections Grid",
+      "settings": {
+        "heading": "Shop by collection",
+        "subheading": "Explore featured categories across the store.",
+        "section_width": "page-width",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
     "featured_collections_grid_main": {
       "type": "featured-collections-grid",
       "blocks": {
@@ -325,6 +364,7 @@
   },
   "order": [
     "hero_jVaWmY",
+    "featured_collections_grid_Mrig77",
     "featured_collections_grid_main",
     "product_list_fa6P9H"
   ]
