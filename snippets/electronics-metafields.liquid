@@ -102,21 +102,20 @@
 
     {% if has_spec %}
       <div class="electronics-metafields__download">
-          <a
-            class="electronics-metafields__download-link button"
-            href="{{ product.metafields.custom.spec_sheet.url }}"
-            target="_blank"
-            download
-            rel="noopener"
-            style="display: inline-block; padding: 0.75em 1.5em; background: #2563eb; color: #fff; border: none; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s;"
-            onmouseover="this.style.background='#1d4ed8'"
-            onmouseout="this.style.background='#2563eb'"
-          >
-            <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="vertical-align: middle;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/></svg>
-              Download Specification Sheet (PDF)
-            </span>
-          </a>
+        <a
+          class="electronics-metafields__download-link"
+          href="{{ spec_metafield.value.url }}"
+          target="_blank"
+          download
+          rel="noopener"
+        >
+          <span class="electronics-metafields__download-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
+            </svg>
+          </span>
+          <span>Download Specification Sheet (PDF)</span>
+        </a>
       </div>
     {% endif %}
 
@@ -212,12 +211,34 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 16px;
-      border-radius: 12px;
-      background: #111827;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: #2563eb;
       color: #ffffff;
       text-decoration: none;
       font-weight: 700;
+      line-height: 1;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.22);
+      transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .electronics-metafields__download-link:hover,
+    .electronics-metafields__download-link:focus-visible {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(29, 78, 216, 0.28);
+    }
+
+    .electronics-metafields__download-link:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.2);
+      outline-offset: 3px;
+    }
+
+    .electronics-metafields__download-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .electronics-metafields__terms {
