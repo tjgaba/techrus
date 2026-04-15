@@ -151,20 +151,12 @@
             "collection": "budget-tech-under-r1-000",
             "button_text": "Shop Now"
           }
-        },
-        "collection_card_yafWm4": {
-          "type": "collection_card",
-          "settings": {
-            "collection": "",
-            "button_text": "Shop Now"
-          }
         }
       },
       "block_order": [
         "collection_card_egNWJt",
         "collection_card_WTK6hT",
-        "collection_card_Trjkec",
-        "collection_card_yafWm4"
+        "collection_card_Trjkec"
       ],
       "name": "Featured Collections Grid",
       "settings": {
