@@ -5,15 +5,21 @@
   assign energy_metafield = product.metafields.custom.energy_rating
   assign year_metafield = product.metafields.custom.release_year
   assign refurbished_metafield = product.metafields.custom.is_refurbished
+  assign spec_url = ''
 
   assign has_warranty = warranty_metafield.value
   assign has_terms = terms_metafield.value
-  assign has_spec = spec_metafield.value
   assign has_energy = energy_metafield.value
   assign has_year = year_metafield.value
   assign is_refurbished = refurbished_metafield.value
   assign has_refurbished_value = false
   assign render_badge_only = render_badge_only | default: false
+
+  if spec_metafield != blank and spec_metafield.value != blank
+    assign spec_url = spec_metafield.value.url
+  endif
+
+  assign has_spec = spec_url != blank
 
   if refurbished_metafield != blank
     assign has_refurbished_value = true
@@ -103,8 +109,8 @@
     {% if has_spec %}
       <div class="electronics-metafields__download">
         <a
-          class="electronics-metafields__download-link"
-          href="{{ spec_metafield.value.url }}"
+          class="electronics-metafields__download-link button"
+          href="{{ spec_url }}"
           target="_blank"
           download
           rel="noopener"
