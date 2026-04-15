@@ -1,0 +1,56 @@
+{% liquid
+  assign warranty_metafield = product.metafields.custom.warranty_months
+  assign energy_metafield = product.metafields.custom.energy_rating
+
+  assign has_warranty = warranty_metafield.value
+  assign has_energy = energy_metafield.value
+  assign has_any_metafields = false
+
+  if has_warranty or has_energy
+    assign has_any_metafields = true
+  endif
+%}
+
+{% if has_any_metafields %}
+  <section class="electronics-metafields" aria-label="Electronics product details">
+    <h2 class="electronics-metafields__title">Product Details</h2>
+
+    <table class="electronics-metafields__table">
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <style>
+    .electronics-metafields {
+      margin-top: 28px;
+      padding: 24px;
+      border: 1px solid rgba(17, 24, 39, 0.12);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(247, 250, 252, 0.95), rgba(255, 255, 255, 1));
+    }
+
+    .electronics-metafields__title {
+      margin: 0;
+      margin-bottom: 16px;
+    }
+
+    .electronics-metafields__table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .electronics-metafields__table th,
+    .electronics-metafields__table td {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .electronics-metafields__table th {
+      width: 180px;
+      padding-right: 16px;
+      font-weight: 700;
+    }
+  </style>
+{% endif %}
