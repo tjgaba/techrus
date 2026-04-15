@@ -17,7 +17,11 @@
   assign has_spec = false
 
   if spec_sheet_metafield != blank and spec_sheet_metafield.value != blank
-    assign spec_sheet_url = spec_sheet_metafield.value.url
+    if spec_sheet_metafield.value.url != blank
+      assign spec_sheet_url = spec_sheet_metafield.value.url
+    else
+      assign spec_sheet_url = spec_sheet_metafield.value
+    endif
   endif
 
   if spec_sheet_url != blank
@@ -113,7 +117,7 @@
       <div class="electronics-metafields__download">
         <a
           class="electronics-metafields__download-link button"
-          href="{{ product.metafields.custom.spec_sheet.value.url | default: spec_sheet_url }}"
+          href="{{ spec_sheet_url }}"
           target="_blank"
           download
           rel="noopener"
