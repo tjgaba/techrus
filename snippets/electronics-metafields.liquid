@@ -14,14 +14,14 @@
   assign is_refurbished = refurbished_metafield.value
   assign has_refurbished_value = false
   assign render_badge_only = render_badge_only | default: false
-  assign energy_rating_value = energy_metafield.value | upcase
-  assign energy_color = '#e53e3e'
-  assign energy_label = 'Below Average'
-  assign has_any_metafields = false
 
   if refurbished_metafield != blank
     assign has_refurbished_value = true
   endif
+
+  assign energy_rating_value = has_energy | upcase
+  assign energy_color = '#e53e3e'
+  assign energy_label = 'Below Average'
 
   case energy_rating_value
     when 'A++'
@@ -38,6 +38,7 @@
       assign energy_label = 'Average Efficiency'
   endcase
 
+  assign has_any_metafields = false
   if has_warranty or has_terms or has_spec or has_energy or has_year or has_refurbished_value
     assign has_any_metafields = true
   endif
@@ -130,14 +131,6 @@
       background: linear-gradient(180deg, rgba(247, 250, 252, 0.95), rgba(255, 255, 255, 1));
     }
 
-    .electronics-metafields__title {
-      margin: 0;
-    }
-
-    .electronics-metafields__terms-heading {
-      margin: 0;
-    }
-
     .electronics-metafields__header {
       display: flex;
       flex-wrap: wrap;
@@ -145,6 +138,11 @@
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 16px;
+    }
+
+    .electronics-metafields__title,
+    .electronics-metafields__terms-heading {
+      margin: 0;
     }
 
     .electronics-metafields__refurbished-badge {
