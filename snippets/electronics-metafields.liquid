@@ -14,12 +14,15 @@
   assign is_refurbished = refurbished_metafield.value
   assign has_refurbished_value = false
   assign render_badge_only = render_badge_only | default: false
+  assign has_spec = false
 
   if spec_metafield != blank and spec_metafield.value != blank
     assign spec_url = spec_metafield.value.url
   endif
 
-  assign has_spec = spec_url != blank
+  if spec_url != blank
+    assign has_spec = true
+  endif
 
   if refurbished_metafield != blank
     assign has_refurbished_value = true
