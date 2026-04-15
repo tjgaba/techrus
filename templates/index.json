@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero_jVaWmY": {
       "type": "hero",
@@ -65,6 +66,7 @@
         "custom_mobile_media": false,
         "media_type_1_mobile": "image",
         "media_type_2_mobile": "image",
+        "link": "",
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -91,33 +93,83 @@
     "featured_collections_grid_main": {
       "type": "featured-collections-grid",
       "blocks": {
+        "collection_card_cKTKtG": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "accessories",
+            "button_text": "Shop Now"
+          }
+        },
         "collection_card_1": {
           "type": "collection_card",
           "settings": {
+            "collection": "high-performance-gear",
             "button_text": "Shop Now"
           }
         },
         "collection_card_2": {
           "type": "collection_card",
           "settings": {
-            "button_text": "Shop Now"
-          }
-        },
-        "collection_card_3": {
-          "type": "collection_card",
-          "settings": {
+            "collection": "electronics-and-accessories-example-products",
             "button_text": "Shop Now"
           }
         }
       },
       "block_order": [
+        "collection_card_cKTKtG",
         "collection_card_1",
-        "collection_card_2",
-        "collection_card_3"
+        "collection_card_2"
       ],
       "settings": {
         "heading": "Featured Collections",
         "subheading": "Browse our most popular consumer electronics categories.",
+        "section_width": "page-width",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "featured_collections_grid_XndgR7": {
+      "type": "featured-collections-grid",
+      "blocks": {
+        "collection_card_egNWJt": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "apple-ecosystem",
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_WTK6hT": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "gaming-gear",
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_Trjkec": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "budget-tech-under-r1-000",
+            "button_text": "Shop Now"
+          }
+        },
+        "collection_card_yafWm4": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "",
+            "button_text": "Shop Now"
+          }
+        }
+      },
+      "block_order": [
+        "collection_card_egNWJt",
+        "collection_card_WTK6hT",
+        "collection_card_Trjkec",
+        "collection_card_yafWm4"
+      ],
+      "name": "Featured Collections Grid",
+      "settings": {
+        "heading": "Shop by collection",
+        "subheading": "Explore featured categories across the store.",
         "section_width": "page-width",
         "padding_top": 48,
         "padding_bottom": 48
@@ -321,6 +373,7 @@
   "order": [
     "hero_jVaWmY",
     "featured_collections_grid_main",
+    "featured_collections_grid_XndgR7",
     "product_list_fa6P9H"
   ]
 }
