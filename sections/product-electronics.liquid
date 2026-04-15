@@ -130,6 +130,9 @@
         <header class="electronics-product__header">
           <p class="electronics-product__vendor">{{ product.vendor | upcase }}</p>
           <h1 class="electronics-product__title">{{ product.title }}</h1>
+          <div class="electronics-product__title-badge">
+            {% render 'electronics-metafields', product: product, render_badge_only: true %}
+          </div>
           <p class="electronics-product__type">{{ product.type }}</p>
           <p class="electronics-product__date">Added {{ product.created_at | date: "%B %d, %Y" }}</p>
 
@@ -177,6 +180,8 @@
             {% endif %}
           </div>
         {% endif %}
+
+        {% render 'electronics-metafields', product: product %}
 
         {% form 'product', product, class: 'electronics-product__form', id: form_id %}
           <div class="electronics-product__options">
@@ -248,6 +253,8 @@
             </tbody>
           </table>
         </div>
+
+        {% render 'product-compare-specs', product: product, collection: collection %}
       </div>
     </div>
   </div>
@@ -372,6 +379,10 @@
       margin: 0 0 10px;
       font-size: clamp(2rem, 4vw, 3.4rem);
       line-height: 1.05;
+    }
+
+    .electronics-product__title-badge {
+      margin-bottom: 10px;
     }
 
     .electronics-product__pricing {
