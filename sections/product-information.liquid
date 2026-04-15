@@ -176,7 +176,15 @@
   additional_blocks: additional_blocks
 %}
 
+<div class="page-width product-information__metafields">
+  {% render 'electronics-metafields', product: closest.product %}
+</div>
+
 {% stylesheet %}
+  .product-information__metafields {
+    margin-top: 24px;
+  }
+
   .sticky-add-to-cart__bar {
     position: fixed;
     bottom: 20px;
