@@ -1,0 +1,204 @@
+{% liquid
+  assign source_collection = compare_collection
+  if source_collection == blank
+    assign source_collection = collection
+  endif
+  if source_collection == blank and product.collections.size > 0
+    assign source_collection = product.collections.first
+  endif
+
+  assign compare_limit = compare_limit | default: 4
+  assign warranty_best = 0
+  assign energy_best_score = 0
+  assign rendered_products = 0
+%}
+
+{% if source_collection != blank and source_collection.products_count > 1 %}
+  {% for compare_product in source_collection.products limit: compare_limit %}
+    {% assign rendered_products = rendered_products | plus: 1 %}
+
+    {% assign compare_warranty = compare_product.metafields.custom.warranty_months.value | default: 0 %}
+    {% if compare_warranty > warranty_best %}
+      {% assign warranty_best = compare_warranty %}
+    {% endif %}
+
+    {% assign compare_energy = compare_product.metafields.custom.energy_rating.value | upcase %}
+    {% assign energy_score = 1 %}
+    {% case compare_energy %}
+      {% when 'A++' %}
+        {% assign energy_score = 5 %}
+      {% when 'A+' %}
+        {% assign energy_score = 4 %}
+      {% when 'A' %}
+        {% assign energy_score = 3 %}
+      {% when 'B' %}
+        {% assign energy_score = 2 %}
+    {% endcase %}
+    {% if energy_score > energy_best_score %}
+      {% assign energy_best_score = energy_score %}
+    {% endif %}
+  {% endfor %}
+
+  {% if rendered_products > 1 %}
+    <section class="product-compare-specs" aria-label="Quick compare">
+      <div class="product-compare-specs__header">
+        <p class="product-compare-specs__eyebrow">Same Collection</p>
+        <h2 class="product-compare-specs__title">Quick Compare</h2>
+        <p class="product-compare-specs__subtitle">
+          Compare key metafields across {{ source_collection.title }} products.
+        </p>
+      </div>
+
+      <div class="product-compare-specs__table-wrap">
+        <table class="product-compare-specs__table">
+          <thead>
+            <tr>
+              <th scope="col">Specification</th>
+              {% for compare_product in source_collection.products limit: compare_limit %}
+                <th scope="col">{{ compare_product.title }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Warranty</th>
+              {% for compare_product in source_collection.products limit: compare_limit %}
+                {% assign compare_warranty = compare_product.metafields.custom.warranty_months.value %}
+                {% assign warranty_is_best = false %}
+                {% if compare_warranty and compare_warranty == warranty_best and warranty_best > 0 %}
+                  {% assign warranty_is_best = true %}
+                {% endif %}
+                <td{% if warranty_is_best %} class="product-compare-specs__cell--best"{% endif %}>
+                  {% if compare_warranty %}
+                    {{ compare_warranty }} months
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+              {% endfor %}
+            </tr>
+
+            <tr>
+              <th scope="row">Energy</th>
+              {% for compare_product in source_collection.products limit: compare_limit %}
+                {% assign compare_energy = compare_product.metafields.custom.energy_rating.value | upcase %}
+                {% assign energy_score = 1 %}
+                {% case compare_energy %}
+                  {% when 'A++' %}
+                    {% assign energy_score = 5 %}
+                  {% when 'A+' %}
+                    {% assign energy_score = 4 %}
+                  {% when 'A' %}
+                    {% assign energy_score = 3 %}
+                  {% when 'B' %}
+                    {% assign energy_score = 2 %}
+                {% endcase %}
+                <td{% if compare_energy != blank and energy_score == energy_best_score %} class="product-compare-specs__cell--best"{% endif %}>
+                  {% if compare_energy != blank %}
+                    {{ compare_energy }}
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+              {% endfor %}
+            </tr>
+
+            <tr>
+              <th scope="row">Year</th>
+              {% for compare_product in source_collection.products limit: compare_limit %}
+                {% assign compare_year = compare_product.metafields.custom.release_year.value %}
+                <td>
+                  {% if compare_year %}
+                    {{ compare_year }}
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+              {% endfor %}
+            </tr>
+
+            <tr>
+              <th scope="row">Refurbished</th>
+              {% for compare_product in source_collection.products limit: compare_limit %}
+                {% assign compare_refurbished_metafield = compare_product.metafields.custom.is_refurbished %}
+                {% assign compare_refurbished = compare_refurbished_metafield.value %}
+                <td{% if compare_refurbished == false and compare_refurbished_metafield != blank %} class="product-compare-specs__cell--best"{% endif %}>
+                  {% if compare_refurbished_metafield != blank %}
+                    {% if compare_refurbished == true %}
+                      Yes
+                    {% else %}
+                      No
+                    {% endif %}
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+              {% endfor %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <style>
+      .product-compare-specs {
+        margin-top: 32px;
+        padding: 28px;
+        border-radius: 24px;
+        background:
+          radial-gradient(circle at top left, rgba(56, 161, 105, 0.14), transparent 34%),
+          linear-gradient(180deg, rgba(244, 247, 250, 0.95), rgba(255, 255, 255, 1));
+        border: 1px solid rgba(17, 24, 39, 0.08);
+      }
+
+      .product-compare-specs__header {
+        margin-bottom: 18px;
+      }
+
+      .product-compare-specs__eyebrow,
+      .product-compare-specs__subtitle {
+        margin: 0;
+      }
+
+      .product-compare-specs__eyebrow {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #2f855a;
+      }
+
+      .product-compare-specs__title {
+        margin: 8px 0 6px;
+      }
+
+      .product-compare-specs__table-wrap {
+        overflow-x: auto;
+      }
+
+      .product-compare-specs__table {
+        width: 100%;
+        min-width: 640px;
+        border-collapse: collapse;
+      }
+
+      .product-compare-specs__table th,
+      .product-compare-specs__table td {
+        padding: 14px 12px;
+        border-bottom: 1px solid rgba(17, 24, 39, 0.1);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .product-compare-specs__table thead th {
+        background: rgba(17, 24, 39, 0.04);
+      }
+
+      .product-compare-specs__cell--best {
+        background: rgba(56, 161, 105, 0.14);
+        color: #22543d;
+        font-weight: 700;
+      }
+    </style>
+  {% endif %}
+{% endif %}
