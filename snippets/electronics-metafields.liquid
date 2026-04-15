@@ -117,7 +117,7 @@
       <div class="electronics-metafields__download">
         <a
           class="electronics-metafields__download-link button"
-          href="{{ spec_sheet_url }}"
+          href="{{ product.metafields.custom.spec_sheet.value.url | default: product.metafields.custom.spec_sheet.value | default: spec_sheet_url }}"
           target="_blank"
           download
           rel="noopener"
