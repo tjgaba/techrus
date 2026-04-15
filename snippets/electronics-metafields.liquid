@@ -1,11 +1,11 @@
 {% liquid
   assign warranty_metafield = product.metafields.custom.warranty_months
   assign terms_metafield = product.metafields.custom.warranty_terms
-  assign spec_metafield = product.metafields.custom.spec_sheet
+  assign spec_sheet_metafield = product.metafields.custom.spec_sheet
   assign energy_metafield = product.metafields.custom.energy_rating
   assign year_metafield = product.metafields.custom.release_year
   assign refurbished_metafield = product.metafields.custom.is_refurbished
-  assign spec_url = ''
+  assign spec_sheet_url = ''
 
   assign has_warranty = warranty_metafield.value
   assign has_terms = terms_metafield.value
@@ -16,11 +16,11 @@
   assign render_badge_only = render_badge_only | default: false
   assign has_spec = false
 
-  if spec_metafield != blank and spec_metafield.value != blank
-    assign spec_url = spec_metafield.value.url
+  if spec_sheet_metafield != blank and spec_sheet_metafield.value != blank
+    assign spec_sheet_url = spec_sheet_metafield.value.url
   endif
 
-  if spec_url != blank
+  if spec_sheet_url != blank
     assign has_spec = true
   endif
 
@@ -113,7 +113,7 @@
       <div class="electronics-metafields__download">
         <a
           class="electronics-metafields__download-link button"
-          href="{{ spec_url }}"
+          href="{{ product.metafields.custom.spec_sheet.value.url | default: spec_sheet_url }}"
           target="_blank"
           download
           rel="noopener"
