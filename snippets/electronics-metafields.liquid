@@ -4,7 +4,25 @@
 
   assign has_warranty = warranty_metafield.value
   assign has_energy = energy_metafield.value
+  assign energy_rating_value = energy_metafield.value | upcase
+  assign energy_color = '#e53e3e'
+  assign energy_label = 'Below Average'
   assign has_any_metafields = false
+
+  case energy_rating_value
+    when 'A++'
+      assign energy_color = '#38a169'
+      assign energy_label = 'Excellent Efficiency'
+    when 'A+'
+      assign energy_color = '#68d391'
+      assign energy_label = 'Very Good Efficiency'
+    when 'A'
+      assign energy_color = '#ecc94b'
+      assign energy_label = 'Good Efficiency'
+    when 'B'
+      assign energy_color = '#ed8936'
+      assign energy_label = 'Average Efficiency'
+  endcase
 
   if has_warranty or has_energy
     assign has_any_metafields = true
@@ -16,7 +34,26 @@
     <h2 class="electronics-metafields__title">Product Details</h2>
 
     <table class="electronics-metafields__table">
-      <tbody></tbody>
+      <tbody>
+        {% if has_warranty %}
+          <tr>
+            <th scope="row">Warranty</th>
+            <td>{{ warranty_metafield.value }} months</td>
+          </tr>
+        {% endif %}
+
+        {% if has_energy %}
+          <tr>
+            <th scope="row">Energy Rating</th>
+            <td>
+              <span class="electronics-metafields__energy-pill" style="--energy-color: {{ energy_color }};">
+                <span class="electronics-metafields__energy-dot"></span>
+                {{ energy_metafield.value }} - {{ energy_label }}
+              </span>
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
     </table>
   </section>
 
@@ -51,6 +88,26 @@
       width: 180px;
       padding-right: 16px;
       font-weight: 700;
+    }
+
+    .electronics-metafields__energy-pill {
+      --energy-color: #e53e3e;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--energy-color) 12%, white);
+      color: #111827;
+      font-weight: 600;
+    }
+
+    .electronics-metafields__energy-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--energy-color);
+      box-shadow: 0 0 0 6px color-mix(in srgb, var(--energy-color) 18%, white);
     }
   </style>
 {% endif %}
