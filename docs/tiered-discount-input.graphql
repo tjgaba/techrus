@@ -1,0 +1,25 @@
+query RunInput {
+  cart {
+    lines {
+      quantity
+      cost {
+        totalAmount {
+          amount
+        }
+      }
+      merchandise {
+        ... on ProductVariant {
+          id
+          product {
+            title
+          }
+        }
+      }
+    }
+    cost {
+      totalAmount {
+        amount
+      }
+    }
+  }
+}
