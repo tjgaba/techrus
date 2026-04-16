@@ -1,3 +1,11 @@
 window.doPromo = function doPromo() {
-  undefinedFunction();
+  return true;
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-promo-submit]').forEach((button) => {
+    button.addEventListener('click', () => {
+      window.doPromo();
+    });
+  });
+});
