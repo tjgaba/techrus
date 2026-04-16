@@ -162,12 +162,14 @@
     </div>
   {% endif %}
 
-    {% if product.metafields.custom.water_resistance_rating != blank %}
-  <div class="water-resistance-rating">
-    <h3>Water Resistance Rating</h3>
-    <p>{{ product.metafields.custom.water_resistance_rating }}</p>
-  </div>
+  {% if water_resistance_metafield != blank %}
+    <div class="water-resistance-rating">
+      <h3>Water Resistance Rating</h3>
+      <p>{{ water_resistance_metafield }}</p>
+    </div>
   {% endif %}
+  
+
 
     {% if has_terms %}
       <div class="electronics-metafields__terms rte">
