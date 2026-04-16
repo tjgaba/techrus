@@ -4,12 +4,21 @@
 {% liquid
   assign promo_image = section.settings.promo_image
   assign secondary_image = section.settings.secondary_image
+  assign promo_alt = section.settings.promo_image_alt | strip
+  assign secondary_alt = section.settings.secondary_image_alt | strip
+  if promo_alt == blank
+    assign promo_alt = 'Featured consumer electronics promotion banner'
+  endif
+  if secondary_alt == blank
+    assign secondary_alt = 'Close-up product detail used in promotional callout'
+  endif
 %}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <section
   class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} promo spacing-style"
   style="{% render 'spacing-padding', settings: section.settings %}"
+  aria-labelledby="PromoHeading-{{ section.id }}"
 >
   <div class="promo__panel">
     <div class="promo__content">
@@ -17,7 +26,7 @@
         <p class="promo__eyebrow">{{ section.settings.eyebrow }}</p>
       {% endif %}
 
-      <h2 class="promo__heading">{{ section.settings.heading }}</h2>
+      <h2 id="PromoHeading-{{ section.id }}" class="promo__heading">{{ section.settings.heading }}</h2>
 
       {% if section.settings.copy != blank %}
         <div class="promo__copy rte">
@@ -38,7 +47,7 @@
         {% endif %}
         {% if section.settings.learn_more_link != blank %}
           <a class="promo__link" href="{{ section.settings.learn_more_link }}">
-            click here
+            {{ section.settings.learn_more_label }}
           </a>
         {% endif %}
       </div>
@@ -76,7 +85,8 @@
               width: promo_image.width,
               height: promo_image.height,
               loading: 'lazy',
-              sizes: '(min-width: 990px) 42vw, 100vw'
+              sizes: '(min-width: 990px) 42vw, 100vw',
+              alt: promo_alt
           }}
         {% endif %}
         <span class="promo__badge">{{ section.settings.badge_text }}</span>
@@ -93,17 +103,32 @@
                 width: secondary_image.width,
                 height: secondary_image.height,
                 loading: 'lazy',
-                sizes: '(min-width: 990px) 20vw, 50vw'
+                sizes: '(min-width: 990px) 20vw, 50vw',
+                alt: secondary_alt
             }}
           {% endif %}
           <h3>{{ section.settings.note_heading }}</h3>
           <p>{{ section.settings.note_copy }}</p>
           <div class="promo__icon-actions">
-            <button class="promo__icon-button button-secondary" type="button">
-              Save
+            <button class="promo__icon-button button-secondary" type="button" aria-label="Save this promotion for later">
+              <span class="svg-wrapper">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M12 21.35 10.55 20C5.4 15.24 2 12.09 2 8.25 2 5.11 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.11 22 8.25c0 3.84-3.4 6.99-8.55 11.76L12 21.35Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
             </button>
-            <button class="promo__icon-button button-secondary" type="button">
-              Share
+            <button class="promo__icon-button button-secondary" type="button" aria-label="Share this promotion">
+              <span class="svg-wrapper">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3ZM5 5h6v2H7v10h10v-4h2v6H5V5Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
             </button>
           </div>
         </article>
@@ -113,6 +138,7 @@
           <p>{{ section.settings.form_copy }}</p>
           <div class="promo__form-fields">
             <div class="promo__field">
+              <label for="PromoEmail-{{ section.id }}">Email address</label>
               <input
                 id="PromoEmail-{{ section.id }}"
                 class="field__input"
@@ -123,12 +149,13 @@
               >
             </div>
             <div class="promo__field">
+              <label for="PromoInterest-{{ section.id }}">Shopping interest</label>
               <input
                 id="PromoInterest-{{ section.id }}"
                 class="field__input"
                 type="text"
                 name="contact[interest]"
-                placeholder="Tell us what you want"
+                placeholder="Noise-cancelling audio, gaming, or smart home"
               >
             </div>
             <button class="button promo__submit" type="submit" onclick="doPromo()">
