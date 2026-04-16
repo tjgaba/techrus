@@ -1,8 +1,21 @@
+<<<<<<< HEAD
 
+=======
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+>>>>>>> 74800c9525ade1d781a99ce0ba2e9d292d825fc8
 {
   "sections": {
     "main": {
       "type": "product-information",
+<<<<<<< HEAD
       "settings": { 
         "media_gallery_layout": "grid",
         "media_gallery_columns_desktop": 2,
@@ -18,10 +31,21 @@
         "columns_desktop": 4,
         "columns_mobile": 2
       }
+=======
+      "settings": {}
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {}
+>>>>>>> 74800c9525ade1d781a99ce0ba2e9d292d825fc8
     }
   },
   "order": [
     "main",
     "recommendations"
   ]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 74800c9525ade1d781a99ce0ba2e9d292d825fc8

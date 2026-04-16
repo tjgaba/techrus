@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% liquid
   assign warranty_metafield = product.metafields.custom.warranty_months
   assign terms_metafield = product.metafields.custom.warranty_terms
@@ -299,3 +300,306 @@
     }
   </style>
 {% endif %}
+=======
+{% liquid
+  assign warranty_metafield = product.metafields.custom.warranty_months
+  assign terms_metafield = product.metafields.custom.warranty_terms
+  assign spec_sheet_metafield = product.metafields.custom.tech_spec_sheet
+  if spec_sheet_metafield == blank
+    assign spec_sheet_metafield = product.metafields.custom.tech_spec_sheet
+  endif
+  assign energy_metafield = product.metafields.custom.energy_rating
+  assign year_metafield = product.metafields.custom.release_year
+  assign refurbished_metafield = product.metafields.custom.is_refurbished
+  assign spec_sheet_url = ''
+
+  assign technical_manual_url = product.metafields.custom.technical_manual | file_url
+
+  assign water_resistance_metafield = product.metafields.custom.water_resistance_rating 
+    if water_resistance_metafield != blank and water_resistance_metafield.value != blank
+        assign water_resistance_value = water_resistance_metafield.value
+        assign has_water_resistance = true
+    endif
+
+  assign has_warranty = warranty_metafield.value
+  assign has_terms = terms_metafield.value
+  assign has_energy = energy_metafield.value
+  assign has_year = year_metafield.value
+  assign is_refurbished = refurbished_metafield.value
+  assign has_refurbished_value = false
+  assign render_badge_only = render_badge_only | default: false
+  assign has_spec = false
+
+  if spec_sheet_metafield != blank and spec_sheet_metafield.value != blank
+    if spec_sheet_metafield.value.url != blank
+      assign spec_sheet_url = spec_sheet_metafield.value.url
+    else
+      assign spec_sheet_url = spec_sheet_metafield.value
+    endif
+  endif
+
+  if spec_sheet_url != blank
+    assign has_spec = true
+  endif
+
+  if refurbished_metafield != blank
+    assign has_refurbished_value = true
+  endif
+
+  assign energy_rating_value = has_energy | upcase
+  assign energy_color = '#e53e3e'
+  assign energy_label = 'Below Average'
+
+  case energy_rating_value
+    when 'A++'
+      assign energy_color = '#38a169'
+      assign energy_label = 'Excellent Efficiency'
+    when 'A+'
+      assign energy_color = '#68d391'
+      assign energy_label = 'Very Good Efficiency'
+    when 'A'
+      assign energy_color = '#ecc94b'
+      assign energy_label = 'Good Efficiency'
+    when 'B'
+      assign energy_color = '#ed8936'
+      assign energy_label = 'Average Efficiency'
+  endcase
+
+  assign has_any_metafields = false
+  if has_warranty or has_terms or has_spec or has_energy or has_year or has_refurbished_value or has_water_resistance
+    assign has_any_metafields = true
+  endif
+%}
+
+{% if render_badge_only %}
+  {% if is_refurbished == true %}
+    <span class="electronics-metafields__refurbished-badge">Certified Refurbished</span>
+  {% endif %}
+{% elsif has_any_metafields %}
+  <section class="electronics-metafields" aria-label="Electronics product details">
+    <div class="electronics-metafields__header">
+      <h2 class="electronics-metafields__title">Product Details</h2>
+      {% if is_refurbished == true %}
+        <span class="electronics-metafields__refurbished-badge">Certified Refurbished</span>
+      {% endif %}
+    </div>
+
+    <table class="electronics-metafields__table">
+      <tbody>
+        {% if has_warranty %}
+          <tr>
+            <th scope="row">Warranty</th>
+            <td>{{ warranty_metafield.value }} months</td>
+          </tr>
+        {% endif %}
+
+        {% if has_energy %}
+          <tr>
+            <th scope="row">Energy Rating</th>
+            <td>
+              <span class="electronics-metafields__energy-pill" style="--energy-color: {{ energy_color }};">
+                <span class="electronics-metafields__energy-dot"></span>
+                {{ energy_metafield.value }} - {{ energy_label }}
+              </span>
+            </td>
+          </tr>
+        {% endif %}
+
+        {% if has_year %}
+          <tr>
+            <th scope="row">Release Year</th>
+            <td>{{ year_metafield.value }}</td>
+          </tr>
+        {% endif %}
+
+        {% if has_refurbished_value %}
+          <tr>
+            <th scope="row">Refurbished</th>
+            <td>
+              {% if is_refurbished == true %}
+                Yes
+              {% else %}
+                No
+              {% endif %}
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+    {% if has_spec %}
+      <div class="electronics-metafields__download">
+        <a
+          class="electronics-metafields__download-link button"
+          href="{{ spec_sheet_url }}"
+          target="_blank"
+          download
+          rel="noopener"
+        >
+          <span class="electronics-metafields__download-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
+            </svg>
+          </span>
+          <span>Download Specification Sheet (PDF)</span>
+        </a>
+      </div>
+    {% endif %}
+
+    {% if product.metafields.custom.technical_manual != blank %}
+  <div class="electronics-metafields__download">
+    <a
+      class="electronics-metafields__download-link button"
+      href="{{ product.metafields.custom.technical_manual | file_url }}"
+      target="_blank"
+      download
+      rel="noopener"
+    >
+      <span class="electronics-metafields__download-icon" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
+        </svg>
+      </span>
+      <span>Download Technical Manual (PDF)</span>
+    </a>    
+    </div>
+  {% endif %}
+
+  {% if water_resistance_metafield != blank %}
+    <div class="water-resistance-rating">
+      <h3>Water Resistance Rating</h3>
+      <p>{{ water_resistance_metafield }}</p>
+    </div>
+  {% endif %}
+  
+
+
+    {% if has_terms %}
+      <div class="electronics-metafields__terms rte">
+        <h3 class="electronics-metafields__terms-heading">Warranty Terms</h3>
+        {{ terms_metafield | metafield_tag }}
+      </div>
+    {% endif %}
+  </section>
+
+  <style>
+    .electronics-metafields {
+      margin-top: 28px;
+      padding: 24px;
+      border: 1px solid rgba(17, 24, 39, 0.12);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(247, 250, 252, 0.95), rgba(255, 255, 255, 1));
+    }
+
+    .electronics-metafields__header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .electronics-metafields__title,
+    .electronics-metafields__terms-heading {
+      margin: 0;
+    }
+
+    .electronics-metafields__refurbished-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #ed8936;
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .electronics-metafields__table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .electronics-metafields__table th,
+    .electronics-metafields__table td {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .electronics-metafields__table th {
+      width: 180px;
+      padding-right: 16px;
+      font-weight: 700;
+    }
+
+    .electronics-metafields__energy-pill {
+      --energy-color: #e53e3e;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--energy-color) 12%, white);
+      color: #111827;
+      font-weight: 600;
+    }
+
+    .electronics-metafields__energy-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--energy-color);
+      box-shadow: 0 0 0 6px color-mix(in srgb, var(--energy-color) 18%, white);
+    }
+
+    .electronics-metafields__download {
+      margin-top: 18px;
+    }
+
+    .electronics-metafields__download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: #2563eb;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.22);
+      transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .electronics-metafields__download-link:hover,
+    .electronics-metafields__download-link:focus-visible {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(29, 78, 216, 0.28);
+    }
+
+    .electronics-metafields__download-link:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.2);
+      outline-offset: 3px;
+    }
+
+    .electronics-metafields__download-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .electronics-metafields__terms {
+      margin-top: 20px;
+      padding-top: 20px;
+    }
+  </style>
+{% endif %}
+>>>>>>> 74800c9525ade1d781a99ce0ba2e9d292d825fc8
