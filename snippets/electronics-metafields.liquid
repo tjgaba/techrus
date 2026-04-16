@@ -9,6 +9,9 @@
   assign year_metafield = product.metafields.custom.release_year
   assign refurbished_metafield = product.metafields.custom.is_refurbished
   assign spec_sheet_url = ''
+  
+  assign technical_manual_url = product.metafields.custom.technical_manual | file_url
+  assign water_resistance_metafield = product.metafields.custom.water_resistance_rating
 
   assign has_warranty = warranty_metafield.value
   assign has_terms = terms_metafield.value
@@ -134,6 +137,32 @@
         </a>
       </div>
     {% endif %}
+
+    {% if product.metafields.custom.technical_manual != blank %}
+  <div class="electronics-metafields__download">
+    <a
+      class="electronics-metafields__download-link button"
+      href="{{ product.metafields.custom.technical_manual | file_url }}"
+      target="_blank"
+      download
+      rel="noopener"
+    >
+      <span class="electronics-metafields__download-icon" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
+        </svg>
+      </span>
+      <span>Download Technical Manual (PDF)</span>
+    </a>    
+    </div>
+  {% endif %}
+
+    {% if product.metafields.custom.water_resistance_rating != blank %}
+  <div class="water-resistance-rating">
+    <h3>Water Resistance Rating</h3>
+    <p>{{ product.metafields.custom.water_resistance_rating }}</p>
+  </div>
+  {% endif %}
 
     {% if has_terms %}
       <div class="electronics-metafields__terms rte">
