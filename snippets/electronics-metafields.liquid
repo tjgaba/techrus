@@ -9,9 +9,14 @@
   assign year_metafield = product.metafields.custom.release_year
   assign refurbished_metafield = product.metafields.custom.is_refurbished
   assign spec_sheet_url = ''
-  
+
   assign technical_manual_url = product.metafields.custom.technical_manual | file_url
-  assign water_resistance_metafield = product.metafields.custom.water_resistance_rating
+
+  assign water_resistance_metafield = product.metafields.custom.water_resistance_rating 
+    if water_resistance_metafield != blank and water_resistance_metafield.value != blank
+        assign water_resistance_value = water_resistance_metafield.value
+        assign has_water_resistance = true
+    endif
 
   assign has_warranty = warranty_metafield.value
   assign has_terms = terms_metafield.value
@@ -58,7 +63,7 @@
   endcase
 
   assign has_any_metafields = false
-  if has_warranty or has_terms or has_spec or has_energy or has_year or has_refurbished_value
+  if has_warranty or has_terms or has_spec or has_energy or has_year or has_refurbished_value or has_water_resistance
     assign has_any_metafields = true
   endif
 %}
