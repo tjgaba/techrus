@@ -3,7 +3,7 @@
   assign terms_metafield = product.metafields.custom.warranty_terms
   assign spec_sheet_metafield = product.metafields.custom.tech_spec_sheet
   if spec_sheet_metafield == blank
-    assign spec_sheet_metafield = product.metafields.custom.spec_sheet
+    assign spec_sheet_metafield = product.metafields.custom.tech_spec_sheet
   endif
   assign energy_metafield = product.metafields.custom.energy_rating
   assign year_metafield = product.metafields.custom.release_year
