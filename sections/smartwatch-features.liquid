@@ -1,0 +1,31 @@
+{% if product %}
+    <div class="smartwatch-features">
+        <h2 class="smartwatch-features__title">{{ product.title }}</h2>
+        <p class="smartwatch-features__price">{{ product.price | money }}</p>
+    
+        {% if product.variants.size > 1 %}
+        <div class="smartwatch-features__variants">
+            <h3>Available Options:</h3>
+            <ul>
+                {% for variant in product.variants %}
+                <li>{{ variant.title }} - {{ variant.price | money }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if product.metafields.custom.water_resistance_rating != blank %}
+        <div class="smartwatch-features__water-resistance">
+            <h3>Water Resistance Rating</h3>
+            <p>{{ product.metafields.custom.water_resistance_rating }}</p>
+        </div>
+        {% endif %}
+        
+        {% if product.metafields.custom.technical_manual != blank %}
+        <div class="smartwatch-features__technical-manual">
+            <h3>Technical Manual</h3>
+            <p>{{ product.metafields.custom.technical_manual }}</p>
+        </div>
+        {% endif %}
+    </div>
+{% endif %}

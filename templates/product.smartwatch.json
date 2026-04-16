@@ -1,0 +1,27 @@
+
+{
+  "sections": {
+    "main": {
+      "type": "product-information",
+      "settings": { 
+        "media_gallery_layout": "grid",
+        "media_gallery_columns_desktop": 2,
+        "media_gallery_columns_mobile": 1,
+        "show_product_title": true,
+        "show_product_price": true
+      }
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "You may also like",
+        "columns_desktop": 4,
+        "columns_mobile": 2
+      }
+    }
+  },
+  "order": [
+    "main",
+    "recommendations"
+  ]
+}

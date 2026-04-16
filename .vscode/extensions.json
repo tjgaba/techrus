@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "Shopify.theme-check",
+    "neilding.language-liquid",
+    "ecmel.vscode-html-css",
+    "esbenp.prettier-vscode",
+    "msjsdiag.debugger-for-chrome"
+  ],
+  "unwantedRecommendations": []
+}

@@ -385,3 +385,35 @@ o Product D: NO metafield section rendered at all
 6. Functions conceptual files — docs/tiered-discount-function.js, docs/tiered-
 discount-input.graphql, and docs/FUNCTIONS-README.md in the repository
 7. Git commit history — meaningful, incremental commits (not one giant commit)
+
+2. Install Shopify CLI
+npm install -g @shopify/cli @shopify/theme
+
+3. Authenticate with Shopify
+Log in to your Shopify store:
+shopify login --store your-store.myshopify.com
+
+4. Start the local development server
+shopify theme dev
+
+5. Optional: Install Theme Check
+gem install theme-check
+
+then run
+theme-check
+
+install dependancies
+npm install
+
+to pull from shopify
+npm install
+
+list themes
+shopify theme list
+
+3. Pull a theme to your local directory
+shopify theme pull --theme-id=THEME_ID
+
+his will download the theme files into your current directory. You can now edit and develop locally. If you need to push changes back, use:
+
+shopify theme push
