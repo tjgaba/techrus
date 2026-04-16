@@ -1,0 +1,63 @@
+.promo {
+  position: relative;
+  color: #ddd;
+}
+
+.promo__panel {
+  display: grid;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #1f2937, #111827);
+}
+
+@media screen and (min-width: 990px) {
+  .promo__panel {
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    align-items: center;
+  }
+}
+
+.promo__eyebrow,
+.promo__copy,
+.promo__note p,
+.promo__form p,
+.promo__highlight span {
+  color: #ccc;
+}
+
+.promo__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.promo__highlights,
+.promo__floating,
+.promo__form-fields {
+  display: grid;
+  gap: 1rem;
+}
+
+.promo__card,
+.promo__note,
+.promo__form,
+.promo__highlight {
+  overflow: hidden;
+  padding: 1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.promo__card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.promo__icon-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: start;
+}

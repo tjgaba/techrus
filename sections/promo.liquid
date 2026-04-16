@@ -1,68 +1,16 @@
-<script>
-  function doPromo() {
-    undefinedFunction();
-  }
-</script>
+{{ 'promo.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'heavy-lib.js' | asset_url }}" defer></script>
+
+{% liquid
+  assign promo_image = section.settings.promo_image
+  assign secondary_image = section.settings.secondary_image
+%}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <section
   class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} promo spacing-style"
   style="{% render 'spacing-padding', settings: section.settings %}"
 >
-  <style>
-    .promo {
-      position: relative;
-      color: #ddd;
-    }
-
-    .promo__panel {
-      display: grid;
-      gap: 2rem;
-      padding: 2rem;
-      border-radius: 24px;
-      background: linear-gradient(135deg, #1f2937, #111827);
-    }
-
-    @media screen and (min-width: 990px) {
-      .promo__panel {
-        grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-        align-items: center;
-      }
-    }
-
-    .promo__eyebrow,
-    .promo__copy,
-    .promo__note p,
-    .promo__form p,
-    .promo__highlight span {
-      color: #ccc;
-    }
-
-    .promo__actions,
-    .promo__highlights,
-    .promo__floating,
-    .promo__form-fields,
-    .promo__icon-actions {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .promo__card,
-    .promo__note,
-    .promo__form,
-    .promo__highlight {
-      border-radius: 20px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.08);
-      padding: 1rem;
-    }
-
-    .promo__icon-actions {
-      grid-auto-flow: column;
-      justify-content: start;
-    }
-  </style>
-
   <div class="promo__panel">
     <div class="promo__content">
       {% if section.settings.eyebrow != blank %}
@@ -119,11 +67,16 @@
 
     <div class="promo__media">
       <div class="promo__card">
-        {% if section.settings.promo_image != blank %}
+        {% if promo_image != blank %}
           {{
-            section.settings.promo_image
+            promo_image
             | image_url: width: 1200
-            | image_tag
+            | image_tag:
+              widths: '480, 720, 960, 1200',
+              width: promo_image.width,
+              height: promo_image.height,
+              loading: 'lazy',
+              sizes: '(min-width: 990px) 42vw, 100vw'
           }}
         {% endif %}
         <span class="promo__badge">{{ section.settings.badge_text }}</span>
@@ -131,11 +84,16 @@
 
       <div class="promo__floating">
         <article class="promo__note">
-          {% if section.settings.secondary_image != blank %}
+          {% if secondary_image != blank %}
             {{
-              section.settings.secondary_image
+              secondary_image
               | image_url: width: 640
-              | image_tag
+              | image_tag:
+                widths: '320, 480, 640',
+                width: secondary_image.width,
+                height: secondary_image.height,
+                loading: 'lazy',
+                sizes: '(min-width: 990px) 20vw, 50vw'
             }}
           {% endif %}
           <h3>{{ section.settings.note_heading }}</h3>
