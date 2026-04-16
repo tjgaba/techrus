@@ -166,6 +166,39 @@
         "collection_card_Trjkec",
         "collection_card_yafWm4"
       ],
+    "promo_assignment_2_2": {
+      "type": "promo",
+      "settings": {
+        "eyebrow": "Weekend audio event",
+        "heading": "Upgrade your setup with faster, quieter tech",
+        "copy": "<p>Discover premium headphones, portable speakers, and desk-ready accessories with shipping visibility, expert support, and energy-smart picks.</p>",
+        "badge_text": "Save up to 20%",
+        "promo_image_alt": "Wireless headphones, speaker, and accessories arranged on a desk",
+        "secondary_image_alt": "Close-up detail of a premium electronics accessory",
+        "primary_link": "shopify://collections/all",
+        "primary_label": "Shop premium audio deals",
+        "secondary_link": "shopify://collections/all",
+        "secondary_label": "Browse smart home bundles",
+        "learn_more_link": "shopify://pages/contact",
+        "learn_more_label": "Read the full promotion terms and shipping details",
+        "highlight_1_title": "Fast fulfilment",
+        "highlight_1_text": "Orders placed before noon dispatch the same business day.",
+        "highlight_2_title": "Energy-smart picks",
+        "highlight_2_text": "Compare low-consumption devices built for long daily use.",
+        "highlight_3_title": "Expert setup support",
+        "highlight_3_text": "Get guidance on compatibility, performance, and warranty coverage.",
+        "note_heading": "Built for shoppers comparing real specs",
+        "note_copy": "Every featured device includes clear shipping expectations, warranty guidance, and product details that help customers decide faster.",
+        "form_heading": "Get early access to the next drop",
+        "form_copy": "Join the promo list for launch alerts, stock updates, and product-specific offers.",
+        "form_button_label": "Request early-access updates",
+        "legal_copy": "We only send product and promotion updates relevant to your selected shopping interest.",
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
       "name": "Featured Collections Grid",
       "settings": {
         "heading": "Shop by collection",
@@ -377,3 +410,4 @@
     "product_list_fa6P9H"
   ]
 }
+    "promo_assignment_2_2",

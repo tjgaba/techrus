@@ -1,0 +1,392 @@
+<script>
+  function doPromo() {
+    undefinedFunction();
+  }
+</script>
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} promo spacing-style"
+  style="{% render 'spacing-padding', settings: section.settings %}"
+>
+  <style>
+    .promo {
+      position: relative;
+      color: #ddd;
+    }
+
+    .promo__panel {
+      display: grid;
+      gap: 2rem;
+      padding: 2rem;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #1f2937, #111827);
+    }
+
+    @media screen and (min-width: 990px) {
+      .promo__panel {
+        grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+        align-items: center;
+      }
+    }
+
+    .promo__eyebrow,
+    .promo__copy,
+    .promo__note p,
+    .promo__form p,
+    .promo__highlight span {
+      color: #ccc;
+    }
+
+    .promo__actions,
+    .promo__highlights,
+    .promo__floating,
+    .promo__form-fields,
+    .promo__icon-actions {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .promo__card,
+    .promo__note,
+    .promo__form,
+    .promo__highlight {
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1rem;
+    }
+
+    .promo__icon-actions {
+      grid-auto-flow: column;
+      justify-content: start;
+    }
+  </style>
+
+  <div class="promo__panel">
+    <div class="promo__content">
+      {% if section.settings.eyebrow != blank %}
+        <p class="promo__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+
+      <h2 class="promo__heading">{{ section.settings.heading }}</h2>
+
+      {% if section.settings.copy != blank %}
+        <div class="promo__copy rte">
+          {{ section.settings.copy }}
+        </div>
+      {% endif %}
+
+      <div class="promo__actions">
+        {% if section.settings.primary_link != blank and section.settings.primary_label != blank %}
+          <a class="button" href="{{ section.settings.primary_link }}">
+            {{ section.settings.primary_label }}
+          </a>
+        {% endif %}
+        {% if section.settings.secondary_link != blank and section.settings.secondary_label != blank %}
+          <a class="button-secondary" href="{{ section.settings.secondary_link }}">
+            {{ section.settings.secondary_label }}
+          </a>
+        {% endif %}
+        {% if section.settings.learn_more_link != blank %}
+          <a class="promo__link" href="{{ section.settings.learn_more_link }}">
+            click here
+          </a>
+        {% endif %}
+      </div>
+
+      <ul class="promo__highlights" role="list">
+        {% if section.settings.highlight_1_title != blank %}
+          <li class="promo__highlight">
+            <strong>{{ section.settings.highlight_1_title }}</strong>
+            <span>{{ section.settings.highlight_1_text }}</span>
+          </li>
+        {% endif %}
+        {% if section.settings.highlight_2_title != blank %}
+          <li class="promo__highlight">
+            <strong>{{ section.settings.highlight_2_title }}</strong>
+            <span>{{ section.settings.highlight_2_text }}</span>
+          </li>
+        {% endif %}
+        {% if section.settings.highlight_3_title != blank %}
+          <li class="promo__highlight">
+            <strong>{{ section.settings.highlight_3_title }}</strong>
+            <span>{{ section.settings.highlight_3_text }}</span>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="promo__media">
+      <div class="promo__card">
+        {% if section.settings.promo_image != blank %}
+          {{
+            section.settings.promo_image
+            | image_url: width: 1200
+            | image_tag
+          }}
+        {% endif %}
+        <span class="promo__badge">{{ section.settings.badge_text }}</span>
+      </div>
+
+      <div class="promo__floating">
+        <article class="promo__note">
+          {% if section.settings.secondary_image != blank %}
+            {{
+              section.settings.secondary_image
+              | image_url: width: 640
+              | image_tag
+            }}
+          {% endif %}
+          <h3>{{ section.settings.note_heading }}</h3>
+          <p>{{ section.settings.note_copy }}</p>
+          <div class="promo__icon-actions">
+            <button class="promo__icon-button button-secondary" type="button">
+              Save
+            </button>
+            <button class="promo__icon-button button-secondary" type="button">
+              Share
+            </button>
+          </div>
+        </article>
+
+        <form class="promo__form" action="#" method="post">
+          <h3>{{ section.settings.form_heading }}</h3>
+          <p>{{ section.settings.form_copy }}</p>
+          <div class="promo__form-fields">
+            <div class="promo__field">
+              <input
+                id="PromoEmail-{{ section.id }}"
+                class="field__input"
+                type="email"
+                name="contact[email]"
+                autocomplete="email"
+                placeholder="name@example.com"
+              >
+            </div>
+            <div class="promo__field">
+              <input
+                id="PromoInterest-{{ section.id }}"
+                class="field__input"
+                type="text"
+                name="contact[interest]"
+                placeholder="Tell us what you want"
+              >
+            </div>
+            <button class="button promo__submit" type="submit" onclick="doPromo()">
+              {{ section.settings.form_button_label }}
+            </button>
+          </div>
+          <p class="promo__legal">{{ section.settings.legal_copy }}</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Promo",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Weekend audio event"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Upgrade your setup with faster, quieter tech"
+    },
+    {
+      "type": "richtext",
+      "id": "copy",
+      "label": "Copy",
+      "default": "<p>Discover premium headphones, portable speakers, and desk-ready accessories with shipping visibility, expert support, and energy-smart picks.</p>"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "Save up to 20%"
+    },
+    {
+      "type": "image_picker",
+      "id": "promo_image",
+      "label": "Primary image"
+    },
+    {
+      "type": "text",
+      "id": "promo_image_alt",
+      "label": "Primary image alt text",
+      "default": "Wireless headphones, speaker, and accessories arranged on a desk"
+    },
+    {
+      "type": "image_picker",
+      "id": "secondary_image",
+      "label": "Secondary image"
+    },
+    {
+      "type": "text",
+      "id": "secondary_image_alt",
+      "label": "Secondary image alt text",
+      "default": "Close-up detail of a premium electronics accessory"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary button label",
+      "default": "Shop premium audio deals"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary button label",
+      "default": "Browse smart home bundles"
+    },
+    {
+      "type": "url",
+      "id": "learn_more_link",
+      "label": "Text link"
+    },
+    {
+      "type": "text",
+      "id": "learn_more_label",
+      "label": "Text link label",
+      "default": "Read the full promotion terms and shipping details"
+    },
+    {
+      "type": "text",
+      "id": "highlight_1_title",
+      "label": "Highlight 1 title",
+      "default": "Fast fulfilment"
+    },
+    {
+      "type": "text",
+      "id": "highlight_1_text",
+      "label": "Highlight 1 text",
+      "default": "Orders placed before noon dispatch the same business day."
+    },
+    {
+      "type": "text",
+      "id": "highlight_2_title",
+      "label": "Highlight 2 title",
+      "default": "Energy-smart picks"
+    },
+    {
+      "type": "text",
+      "id": "highlight_2_text",
+      "label": "Highlight 2 text",
+      "default": "Compare low-consumption devices built for long daily use."
+    },
+    {
+      "type": "text",
+      "id": "highlight_3_title",
+      "label": "Highlight 3 title",
+      "default": "Expert setup support"
+    },
+    {
+      "type": "text",
+      "id": "highlight_3_text",
+      "label": "Highlight 3 text",
+      "default": "Get guidance on compatibility, performance, and warranty coverage."
+    },
+    {
+      "type": "text",
+      "id": "note_heading",
+      "label": "Note heading",
+      "default": "Built for shoppers comparing real specs"
+    },
+    {
+      "type": "text",
+      "id": "note_copy",
+      "label": "Note copy",
+      "default": "Every featured device includes clear shipping expectations, warranty guidance, and product details that help customers decide faster."
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form heading",
+      "default": "Get early access to the next drop"
+    },
+    {
+      "type": "text",
+      "id": "form_copy",
+      "label": "Form copy",
+      "default": "Join the promo list for launch alerts, stock updates, and product-specific offers."
+    },
+    {
+      "type": "text",
+      "id": "form_button_label",
+      "label": "Form button label",
+      "default": "Request early-access updates"
+    },
+    {
+      "type": "text",
+      "id": "legal_copy",
+      "label": "Legal copy",
+      "default": "We only send product and promotion updates relevant to your selected shopping interest."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "full-width",
+          "label": "Full width"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo",
+      "category": "Banners"
+    }
+  ]
+}
+{% endschema %}
