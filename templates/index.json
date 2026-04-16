@@ -61,6 +61,7 @@
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
+        "image_1": "shopify://shop_images/compilation-electronic-gadgets-black-background_893571-15167.avif",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
@@ -151,21 +152,22 @@
             "collection": "budget-tech-under-r1-000",
             "button_text": "Shop Now"
           }
-        },
-        "collection_card_yafWm4": {
-          "type": "collection_card",
-          "settings": {
-            "collection": "",
-            "button_text": "Shop Now"
-          }
         }
       },
       "block_order": [
         "collection_card_egNWJt",
         "collection_card_WTK6hT",
-        "collection_card_Trjkec",
-        "collection_card_yafWm4"
+        "collection_card_Trjkec"
       ],
+      "name": "Featured Collections Grid",
+      "settings": {
+        "heading": "Shop by collection",
+        "subheading": "Explore featured categories across the store.",
+        "section_width": "page-width",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
     "promo_assignment_2_2": {
       "type": "promo",
       "settings": {
@@ -197,15 +199,6 @@
         "section_width": "page-width",
         "padding-block-start": 48,
         "padding-block-end": 48
-      }
-    },
-      "name": "Featured Collections Grid",
-      "settings": {
-        "heading": "Shop by collection",
-        "subheading": "Explore featured categories across the store.",
-        "section_width": "page-width",
-        "padding_top": 48,
-        "padding_bottom": 48
       }
     },
     "product_list_fa6P9H": {
@@ -407,7 +400,7 @@
     "hero_jVaWmY",
     "featured_collections_grid_main",
     "featured_collections_grid_XndgR7",
+    "promo_assignment_2_2",
     "product_list_fa6P9H"
   ]
 }
-    "promo_assignment_2_2",
